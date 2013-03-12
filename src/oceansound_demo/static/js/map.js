@@ -71,6 +71,17 @@ $(document).ready(function () {
         },
     });
 
+    MIDI.loadPlugin({
+      soundfontUrl: "/static/soundfont/",
+      instrument: "acoustic_grand_piano",
+      callback: function () {
+        // this sets up the MIDI.Player and gets things going...
+        player = MIDI.Player;
+        player.timeWarp = 1; // speed the song is played back
+        //MIDIPlayerPercentage(player);
+      }
+    });
+
     var clickControl = new OpenLayers.Control.Click( {
         trigger: function(e) {
             var lonlat = map.getLonLatFromPixel(e.xy);
@@ -81,20 +92,7 @@ $(document).ready(function () {
                 {'lat': lonlat.lat,
                  'lon': lonlat.lon},
                 function(data) {
-
-                  MIDI.loadPlugin({
-                    soundfontUrl: "/static/soundfont/",
-                    instrument: "acoustic_grand_piano",
-                    callback: function () {
-                      // this sets up the MIDI.Player and gets things going...
-                      player = MIDI.Player;
-                      player.timeWarp = 1; // speed the song is played back
-                      player.loadFile("data:audio/midi;base64," + data.music, player.start);
-                      //MIDIPlayerPercentage(player);
-                      //MIDI.loader.stop();
-                    }
-                  });
-
+                  player.loadFile("data:audio/midi;base64," + data.music, player.start);
             });
         }
     });
