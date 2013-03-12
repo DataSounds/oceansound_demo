@@ -1,0 +1,4 @@
+include README.rst
+include NEWS.txt
+recursive-include src/oceansound_demo/templates *
+recursive-include src/oceansound_demo/static *

@@ -1,0 +1,21 @@
+#map {
+    height: 400px;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.olControlLayerSwitcher .layersDiv {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.baseLayersDiv label, .dataLayersDiv label {
+    display: inline;
+    margin-left: 6px;
+}
+
+.active-layer {
+    font-weight: bold !important;
+}
