@@ -19,3 +19,13 @@
 .active-layer {
     font-weight: bold !important;
 }
+
+#placeholder {
+  height: 100px;
+}
+
+.demo-container {
+  height: 100px;
+  width: 50%;
+  float: right;
+}

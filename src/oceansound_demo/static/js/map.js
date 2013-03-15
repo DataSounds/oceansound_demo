@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(window).bind('resize', function() {
-        $('#map').height($(window).height() - $('.navbar').height());
+        $('#map').height($(window).height() - $('.navbar').height() - $('.footer').height());
     });
     $(window).resize();
 
@@ -74,12 +74,67 @@ $(document).ready(function () {
     MIDI.loadPlugin({
       soundfontUrl: "/static/soundfont/",
       instrument: "acoustic_grand_piano",
-      callback: function () {
-        // this sets up the MIDI.Player and gets things going...
-        player = MIDI.Player;
-        player.timeWarp = 1; // speed the song is played back
-        //MIDIPlayerPercentage(player);
-      }
+      callback: function () {},
+    });
+
+
+    var pausePlayStop = function(stop) {
+        var d = document.getElementById("pausePlay");
+        if (stop) {
+            MIDI.Player.stop();
+            d.src = "/static/img/MIDI/play.png";
+        } else if (MIDI.Player.playing) {
+            d.src = "/static/img/MIDI/play.png";
+            MIDI.Player.pause(true);
+        } else {
+            d.src = "/static/img/MIDI/pause.png";
+            MIDI.Player.resume();
+        }
+    };
+
+
+    var MIDIPlayerPercentage = function(player) {
+        // update the timestamp
+        var time1 = document.getElementById("time1");
+        var time2 = document.getElementById("time2");
+        var capsule = document.getElementById("capsule");
+        var timeCursor = document.getElementById("cursor");
+        //
+        Event.add(capsule, "drag", function (event, self) {
+            Event.cancel(event);
+            player.currentTime = (self.x) / $("#capsule").height() * player.endTime;
+            if (player.currentTime < 0) player.currentTime = 0;
+            if (player.currentTime > player.endTime) player.currentTime = player.endTime;
+            if (self.state === "down") {
+                player.pause(true);
+            } else if (self.state === "up") {
+                player.resume();
+            }
+        });
+        //
+        function timeFormatting(n) {
+            var minutes = n / 60 >> 0;
+            var seconds = String(n - (minutes * 60) >> 0);
+            if (seconds.length == 1) seconds = "0" + seconds;
+            return minutes + ":" + seconds;
+        };
+        player.setAnimation(function(data, element) {
+            var percent = data.now / data.end;
+            var now = data.now >> 0; // where we are now
+            var end = data.end >> 0; // end of song
+            // display the information to the user
+            timeCursor.style.width = (percent * 100) + "%";
+            time1.innerHTML = timeFormatting(now);
+            time2.innerHTML = "-" + timeFormatting(end - now);
+        });
+    };
+
+    $("#pausePlay").click(function () {
+      pausePlayStop();
+    });
+
+    $("#stopPlay").click(function () {
+      pausePlayStop(true);
     });
 
     var clickControl = new OpenLayers.Control.Click( {
@@ -92,7 +147,21 @@ $(document).ready(function () {
                 {'lat': lonlat.lat,
                  'lon': lonlat.lon},
                 function(data) {
-                  player.loadFile("data:audio/midi;base64," + data.music, player.start);
+                    // speed the song is played back
+                    MIDI.Player.timeWarp = 1;
+                    MIDI.Player.loadFile("data:audio/midi;base64," + data.music, MIDI.Player.start);
+                    MIDIPlayerPercentage(MIDI.Player);
+
+                    var d1 = [];
+                    for (var i = 0; i < data.series.length; i++) {
+                        d1.push([i, data.series[i]]);
+                    }
+
+                    plt = $.plot("#placeholder", [d1], {
+                      'grid': {
+                        'backgroundColor': 'white',
+                      },
+                    });
             });
         }
     });

@@ -6,6 +6,7 @@
     <link href="/static/css/OpenLayers.css" rel="stylesheet">
     <link href="/static/css/google.css" rel="stylesheet">
     <link href="/static/css/ocsnddemo.css" rel="stylesheet">
+    <link href="/static/css/MIDIPlayer.css" rel="stylesheet" type="text/css" />
 {% endblock %}
 
 {% block javascript %}
@@ -22,6 +23,7 @@
     <script src="/static/js/MIDI/Player.js" type="text/javascript"></script>
     <script src="/static/js/Window/DOMLoader.XMLHttp.js" type="text/javascript"></script>
     <script src="/static/js/Window/DOMLoader.script.js" type="text/javascript"></script>
+    <script src="/static/js/Window/Event.js" type="text/javascript"></script>
     <!-- jasmid -->
     <script src="/static/js/jasmid/stream.js"></script>
     <script src="/static/js/jasmid/midifile.js"></script>
@@ -30,6 +32,8 @@
     <script src="/static/js/WebMIDIAPI.js" type="text/javascript"></script>
     <script src="/static/js/Base64.js" type="text/javascript"></script>
     <script src="/static/js/base64binary.js" type="text/javascript"></script>
+    <!-- flot -->
+    <script src="/static/js/jquery.flot.js" type="text/javascript"></script>
 
 {% endblock %}
 
@@ -50,4 +54,28 @@
 
 {% block main %}
     <div id="map"></div>
+
+{% endblock %}
+
+{% block footer %}
+
+ <div class="player" style="height: 100px; box-shadow: 0 -1px #000; margin-bottom: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+  <div style="margin: 0 auto; width: 160px; float: left;">
+  <input type="image" src="/static/img/MIDI/pause.png" align="absmiddle" value="pause" id="pausePlay">
+  <input type="image" src="/static/img/MIDI/stop.png" align="absmiddle" value="stop" id="stopPlay">
+  </div>
+  <div class="time-controls" style="float: left; margin: 0; position: relative; top: 5px;">
+   <span id="time1" class="time">0:00</span>
+   <span id="capsule">
+	<span id="cursor"></span>
+   </span>
+   <span id="time2" class="time" style="text-align: left;">-0:00</span>
+  </div>
+        <div class="demo-container">
+            <div id="placeholder" class="demo-placeholder"></div>
+        </div>
+
+ </div>
+
+
 {% endblock %}

@@ -4,8 +4,8 @@
         <meta charset="utf-8">
         <title>{% block title %}{% endblock %}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <meta name="description" content="Zen of Data">
-        <meta name="author" content="Roberto De Almeida">
+        <meta name="description" content="OceanSound Demo">
+        <meta name="author" content="Luiz Irber">
         <meta name="apple-mobile-web-app-capable" content="yes">
 
         <!-- Le styles -->
@@ -66,6 +66,10 @@
         </div>
 
         {% block main %}{% endblock %}
+
+        <footer class="navbar navbar-fixed-bottom">
+          {% block footer %}{% endblock %}
+        </footer>
 
         <!-- Le javascript
         ================================================== -->
