@@ -138,31 +138,41 @@ $(document).ready(function () {
     });
 
     var clickControl = new OpenLayers.Control.Click( {
-        trigger: function(e) {
+          trigger: function(e) {
             var lonlat = map.getLonLatFromPixel(e.xy);
             var proj = new OpenLayers.Projection("EPSG:4326");
             lonlat.transform(map.getProjectionObject(), proj);
 
-            $.getJSON('/music',
-                {'lat': lonlat.lat,
-                 'lon': lonlat.lon},
-                function(data) {
-                    // speed the song is played back
-                    MIDI.Player.timeWarp = 1;
-                    MIDI.Player.loadFile("data:audio/midi;base64," + data.music, MIDI.Player.start);
-                    MIDIPlayerPercentage(MIDI.Player);
+          $.ajax({
+            url: '/music',
+            dataType: 'json',
+            data: {
+              'lat': lonlat.lat,
+              'lon': lonlat.lon
+            },
+            success: function( data ) {
+                MIDI.Player.timeWarp = 1;
+                MIDI.Player.loadFile(
+                  "data:audio/midi;base64," + data.music,
+                  MIDI.Player.start);
+                MIDIPlayerPercentage(MIDI.Player);
 
-                    var d1 = [];
-                    for (var i = 0; i < data.series.length; i++) {
-                        d1.push([i, data.series[i]]);
-                    }
+                var d1 = [];
+                for (var i = 0; i < data.series.length; i++) {
+                    d1.push([i, data.series[i]]);
+                }
 
-                    plt = $.plot("#placeholder", [d1], {
-                      'grid': {
-                        'backgroundColor': 'white',
-                      },
-                    });
-            });
+                plt = $.plot("#placeholder", [d1], {
+                  'grid': {
+                    'backgroundColor': 'white',
+                  },
+                });
+            },
+            error: function( data ) {
+              alert( "ERROR:  " + data );
+            }
+          });
+
         }
     });
 
