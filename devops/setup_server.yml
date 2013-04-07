@@ -21,6 +21,7 @@
         - zlib1g-dev
         - mysql-client
         - python-dev
+        - python-numpy
         - python-setuptools
         - python-imaging
         - python-mysqldb
