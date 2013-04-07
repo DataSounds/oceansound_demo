@@ -169,7 +169,7 @@ $(document).ready(function () {
                 });
             },
             error: function( data ) {
-              alert( "ERROR:  " + data );
+              alert("ERROR in the backend");
             }
           });
 
