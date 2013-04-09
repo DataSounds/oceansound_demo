@@ -167,6 +167,11 @@ $(document).ready(function () {
                     'backgroundColor': 'white',
                   },
                 });
+                MIDI.Player.removeListener()
+                MIDI.Player.addListener(function(music) {
+                  plt.unhighlight();
+                  plt.highlight(0, music.now / music.end * data.series.length);
+                });
             },
             error: function( data ) {
               alert("ERROR in the backend");
