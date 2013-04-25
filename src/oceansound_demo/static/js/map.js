@@ -4,6 +4,14 @@ $(document).ready(function () {
     });
     $(window).resize();
 
+    $('#help_modal').modal('show');
+    $('#gotoexpl').click(function() {
+      $('#helpTab a[href="#TabExpl"]').tab('show');
+    });
+    $('#gotocontrib').click(function() {
+      $('#helpTab a[href="#TabContrib"]').tab('show');
+    });
+
     OpenLayers.ImgPath = "/static/img/OpenLayers/dark/";
 
     var map = new OpenLayers.Map({

@@ -49,11 +49,52 @@
                 <li class="divider"></li>
             </ul>
         </li>
+        <li><a href="#help_modal" data-toggle="modal" id="help_nav">Help</a></li>
     </ul>
 {% endblock %}
 
 {% block main %}
     <div id="map"></div>
+
+    <div class="modal fade" id="help_modal">
+      <div class="modal-header">
+        <a class="close" data-dismiss="modal">&times;</a>
+        <h3>OceanSound demo</h3>
+      </div>
+      <div class="modal-body">
+
+        <ul class="nav nav-tabs" id="helpTab">
+          <li class="active">
+            <a href="#TabWelcome" data-toggle="tab">Welcome</a>
+          </li>
+          <li><a href="#TabExpl" data-toggle="tab">Explanation</a></li>
+          <li><a href="#TabContrib" data-toggle="tab">Contribute</a></li>
+        </ul>
+
+           <div class="tab-content">
+            <div class="tab-pane active" id="TabWelcome">
+              <p> Welcome! This is a demo for OceanSound, a sonification
+                  module. For more details go to the
+                  <a href="#TabExpl" id="gotoexpl">explanation</a> and
+                  <a href="#TabContrib" id="gotocontrib">contributing</a>
+              </p>
+            </div>
+            <div class="tab-pane" id="TabExpl">
+              <p> This demo uses data from the MODIS sensor on the NASA Aqua satellite. This sensor measures Chlorophyll-A concentration on oceans, and data is available as monthly averages since 2002.</p>
+            </div>
+            <div class="tab-pane" id="TabContrib">
+              <p> All code is available on GitHub. You can check the
+                  Python module or this demo.
+              </p>
+            </div>
+           </div>
+
+      </div>
+      <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Let's get started!</a>
+      </div>
+    </div>
+
 
 {% endblock %}
 
