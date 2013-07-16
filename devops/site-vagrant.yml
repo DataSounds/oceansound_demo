@@ -1,0 +1,11 @@
+---
+
+- name: Install dependencies and deploy oceansound-demo
+  hosts: webservers
+  user: vagrant
+  sudo: True
+
+  roles:
+#    - security
+    - common
+    - deploy

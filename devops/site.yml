@@ -1,0 +1,11 @@
+---
+
+- name: Install dependencies and deploy oceansound-demo
+  hosts: webservers
+  user: deploy
+  sudo: True
+
+  roles:
+    - security
+    - common
+    - deploy

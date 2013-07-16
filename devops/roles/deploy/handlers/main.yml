@@ -1,0 +1,14 @@
+---
+
+- name: reload supervisor
+  shell: supervisorctl reload
+  notify: ensure supervisor service
+
+- name: ensure supervisor service
+  action: service name=supervisord state=started
+
+- name: restart app
+  action: supervisorctl name=${app_name} state=restarted
+
+- name: restart nginx
+  action: service name=nginx state=restarted
