@@ -26,7 +26,7 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision :ansible do |ansible|
-    ansible.playbook = "devops/site-vagrant.yml"
+    ansible.playbook = "devops/security-vagrant.yml"
     ansible.inventory_file = "devops/stage"
   end
 end

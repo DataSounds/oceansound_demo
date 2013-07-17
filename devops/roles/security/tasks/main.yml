@@ -1,0 +1,70 @@
+---
+
+- name: install security packages
+  apt: pkg=$item update_cache=yes state=installed
+  with_items:
+    - fail2ban
+    - ufw
+    - postfix
+    - libsasl2-2
+    - ca-certificates
+    - libsasl2-modules
+    - logwatch
+    - unattended-upgrades
+    - update-notifier-common
+
+- name: ensure postfix dir exists
+  file: dest=/etc/postfix owner=postfix group=postfix state=directory
+
+- name: install postfix config file
+  copy: src=main.cf dest=/etc/postfix/main.cf owner=postfix group=postfix
+
+- name: copy password file for mailgun relay
+  copy: src=sasl_passwd dest=/etc/postfix/sasl_passwd
+        mode=400 owner=postfix group=postfix
+
+- name: generate sasl_passwd.db for postfix
+  command: postmap /etc/postfix/sasl_passwd
+
+- name: create sshlogin group
+  group: name=sshlogin state=present
+  notify: restart sshd
+
+- name: create deploy user
+  user: name=deploy comment="Deploy user"
+        groups="admin,sshlogin" append=yes state=present
+
+- name: Set up authorized_keys for the deploy user
+  authorized_key: user=deploy
+                  key="{{ item }}"
+  with_file:
+    - public_keys/luiz
+    - public_keys/arnaldo
+
+- name: disable root login
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^[#]?PermitRootLogin"
+              line="PermitRootLogin no"
+              state=present
+  notify: restart sshd
+
+- name: disable X11Forwarding
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^[#]?X11Forwarding"
+              line="X11Forwarding no"
+              state=present
+  notify: restart sshd
+
+- name: disable UseDNS
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^[#]?UseDNS"
+              line="UseDNS no"
+              state=present
+  notify: restart sshd
+
+- name: allow only sshlogin members
+  lineinfile: dest=/etc/ssh/sshd_config
+              regexp="^[#]?AllowGroups"
+              line="AllowGroups sshlogin"
+              state=present
+  notify: restart sshd

@@ -6,6 +6,5 @@
   sudo: True
 
   roles:
-    - security
     - common
     - deploy
