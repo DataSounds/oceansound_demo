@@ -32,7 +32,11 @@
 
 - name: create deploy user
   user: name=deploy comment="Deploy user"
-        groups="admin,sshlogin" append=yes state=present
+        groups="sshlogin" append=yes state=present
+
+- name: add sudo rule for deploy
+  copy: src=sudoers_deploy dest=/etc/sudoers.d/90-deploy
+  notify: restart sudo
 
 - name: Set up authorized_keys for the deploy user
   authorized_key: user=deploy

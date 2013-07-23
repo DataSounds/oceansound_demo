@@ -7,9 +7,11 @@ import numpy as np
 from OceanSound.extract import extract_series
 from DataSounds.sounds import get_music
 
-from flask import Flask, render_template, request, json, Response
+from flask import Flask, render_template, request, json, Response, current_app
 
 app = Flask(__name__)
+app.config.from_object('settings')
+app.config.from_envvar('OCDEMO_CONFIG', silent=True)
 
 
 def replace_nan(value):
@@ -25,8 +27,8 @@ def replace_nan(value):
         return value
 
 
-def gen_music(lat, lon):
-    data_am = extract_series(lat, lon, "/home/luizirber/temp/MODIS_Chla_9km")
+def gen_music(lat, lon, datadir):
+    data_am = extract_series(lat, lon, datadir)
     am = get_music(data_am['Series'])
 
     return am, data_am['Series'], data_am['Lat'], data_am['Lon']
@@ -45,7 +47,8 @@ def music():
         if mode == 'MODIS':
             lat = float(request.args['lat'])
             lon = float(request.args['lon'])
-            music, series, new_lat, new_lon = gen_music(lat, lon)
+            music, series, new_lat, new_lon = (
+                gen_music(lat, lon, current_app.config['DATADIR']))
             return json.dumps({
                               'lat': new_lat,
                               'lon': new_lon,
