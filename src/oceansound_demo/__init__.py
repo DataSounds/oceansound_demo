@@ -10,7 +10,7 @@ from DataSounds.sounds import get_music
 from flask import Flask, render_template, request, json, Response, current_app
 
 app = Flask(__name__)
-app.config.from_object('settings')
+app.config.from_object('oceansound_demo.settings')
 app.config.from_envvar('OCDEMO_CONFIG', silent=True)
 
 
