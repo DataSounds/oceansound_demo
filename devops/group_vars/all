@@ -10,3 +10,8 @@ pyhdf_env:
   INCLUDE_DIRS: /usr/include/hdf
   LIBRARY_DIRS: /usr/lib
   NOSZIP: 1
+
+swift_env:
+  ST_AUTH: https://auth.api.rackspacecloud.com/v1.0
+  ST_USER: datasounds
+  ST_KEY: xxxx

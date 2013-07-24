@@ -20,6 +20,18 @@
 
 - name: install app as module
   action: pip name=${webapps_dir}/${app_name}/src/ virtualenv=${webapps_dir}/${app_name}/venv extra_args="-U" state=present
+  notify:
+    - restart app
+
+- name: make sure MODIS datadir exists
+  file: dest=${webapps_dir}/${app_name}/data/MODIS_Chla_9km
+        state=directory owner=deploy
+
+- name: download MODIS data
+  command: swift download -s MODIS
+           chdir=${webapps_dir}/${app_name}/data/MODIS_Chla_9km
+           creates=${webapps_dir}/${app_name}/data/MODIS_Chla_9km/A20062442006273.L3m_MO_CHL_chlor_a_9km
+  environment: ${swift_env}
 
 - name: create supervisor program config
   action: template src=supervisor.ini dest=/etc/supervisor/${app_name}.ini

@@ -25,13 +25,14 @@
 
 - name: generate sasl_passwd.db for postfix
   command: postmap /etc/postfix/sasl_passwd
+  notify: restart postfix
 
 - name: create sshlogin group
   group: name=sshlogin state=present
   notify: restart sshd
 
 - name: create deploy user
-  user: name=deploy comment="Deploy user"
+  user: name=deploy comment="Deploy user" shell=/bin/bash
         groups="sshlogin" append=yes state=present
 
 - name: add sudo rule for deploy
@@ -72,3 +73,15 @@
               line="AllowGroups sshlogin"
               state=present
   notify: restart sshd
+
+- name: don't accept ipv6 router advertisements
+  sysctl: name=net.ipv6.conf.all.accept_ra value=0 state=present
+
+- name: don't accept ipv6 router advertisements by default
+  sysctl: name=net.ipv6.conf.all.accept_ra value=0 state=present
+
+- name: don't accept ipv6 router advertisements on eth0
+  sysctl: name=net.ipv6.conf.eth0.accept_ra value=0 state=present
+
+- name: don't accept ipv6 router advertisements on eth1
+  sysctl: name=net.ipv6.conf.eth1.accept_ra value=0 state=present
