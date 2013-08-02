@@ -1,0 +1,9 @@
+---
+
+- name: Set up basic security, a deploy user and postfix relay
+  hosts: webservers
+  user: root
+  sudo: True
+
+  roles:
+    - security

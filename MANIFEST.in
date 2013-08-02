@@ -1,4 +1,4 @@
-include README.rst
+include README.md
 include NEWS.txt
 recursive-include src/oceansound_demo/templates *
 recursive-include src/oceansound_demo/static *

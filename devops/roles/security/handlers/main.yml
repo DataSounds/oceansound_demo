@@ -1,0 +1,8 @@
+- name: restart postfix
+  service: name=postfix state=restarted
+
+- name: restart sshd
+  service: name=ssh state=restarted
+
+- name: restart sudo
+  service: name=sudo state=restarted
