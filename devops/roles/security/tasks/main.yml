@@ -7,7 +7,6 @@
     - ufw
     - postfix
     - libsasl2-2
-    - ca-certificates
     - libsasl2-modules
     - logwatch
     - unattended-upgrades
@@ -22,10 +21,7 @@
 - name: copy password file for mailgun relay
   copy: src=sasl_passwd dest=/etc/postfix/sasl_passwd
         mode=400 owner=postfix group=postfix
-
-- name: generate sasl_passwd.db for postfix
-  command: postmap /etc/postfix/sasl_passwd
-  notify: restart postfix
+  notify: generate sasl_passwd.db for postfix
 
 - name: create sshlogin group
   group: name=sshlogin state=present
@@ -33,7 +29,7 @@
 
 - name: create deploy user
   user: name=deploy comment="Deploy user" shell=/bin/bash
-        groups="sshlogin" append=yes state=present
+        group="www-data" groups="sshlogin" append=yes state=present
 
 - name: add sudo rule for deploy
   copy: src=sudoers_deploy dest=/etc/sudoers.d/90-deploy
@@ -85,3 +81,29 @@
 
 - name: don't accept ipv6 router advertisements on eth1
   sysctl: name=net.ipv6.conf.eth1.accept_ra value=0 state=present
+
+- name: configure auto updates (security)
+  copy: src=10periodic dest=/etc/apt/apt.conf.d/10periodic
+
+- name: configure UFW for SSH
+  command: ufw allow 22
+  notify: restart UFW
+
+- name: configure UFW for HTTP
+  command: ufw allow 80
+  notify: restart UFW
+
+- name: configure UFW for HTTPS
+  command: ufw allow 443
+  notify: restart UFW
+
+- name: configure fail2ban (new rules)
+  copy: src=jail.local dest=/etc/fail2ban/jail.local
+  notify: restart fail2ban
+
+- name: configure fail2ban (ufw-ssh filter)
+  copy: src=ufw-ssh.conf dest=/etc/fail2ban/action.d/ufw-ssh.conf
+  notify: restart fail2ban
+
+- name: configure receiver for logwatch
+  copy: src=00logwatch dest=/etc/cron.daily/00logwatch

@@ -1,3 +1,7 @@
+- name: generate sasl_passwd.db for postfix
+  command: postmap /etc/postfix/sasl_passwd
+  notify: restart postfix
+
 - name: restart postfix
   service: name=postfix state=restarted
 
@@ -6,3 +10,9 @@
 
 - name: restart sudo
   service: name=sudo state=restarted
+
+- name: restart UFW
+  shell: yes y | ufw enable
+
+- name: restart fail2ban
+  service: name=fail2ban state=restarted

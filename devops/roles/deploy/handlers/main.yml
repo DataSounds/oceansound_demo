@@ -1,14 +1,18 @@
 ---
 
 - name: reload supervisor
-  shell: supervisorctl reload
+  sudo: True
+  command: supervisorctl reload
   notify: ensure supervisor service
 
 - name: ensure supervisor service
+  sudo: True
   action: service name=supervisord state=started
 
 - name: restart app
+  sudo: True
   action: supervisorctl name=${app_name} state=restarted
 
 - name: restart nginx
+  sudo: True
   action: service name=nginx state=restarted

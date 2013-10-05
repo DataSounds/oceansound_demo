@@ -32,16 +32,10 @@ alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
 mydestination = localhost, localhost.localdomain, localhost
 
-relayhost = [smtp.mailgun.org]:465
+relayhost = smtp.mailgun.org
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
 smtp_sasl_security_options = noanonymous
-smtp_tls_CAfile = /etc/postfix/cacert.pem
-smtp_use_tls = yes
-
-smtp_tls_security_level = may
-smtpd_tls_security_level = may
-smtp_tls_note_starttls_offer = yes
 
 mynetworks = 127.0.0.0/8 [::ffff:127.0.0.0]/104 [::1]/128
 mailbox_size_limit = 0
