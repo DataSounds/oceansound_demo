@@ -1,9 +1,0 @@
----
-
-- name: Set up basic security, a deploy user and postfix relay
-  hosts: webservers
-  user: vagrant
-  sudo: True
-
-  roles:
-    - security
