@@ -3,7 +3,7 @@ Jinja2==2.8
 OceanSound==0.1.2
 DataSounds==1.2.5
 numpy==1.10.4
-pyhdf==0.8.3
+python-hdf4==0.9
 sebastian==0.0.3
 wsgiref==0.1.2
 newrelic
