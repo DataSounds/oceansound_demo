@@ -2,7 +2,7 @@ Flask==1.0.2
 Jinja2==2.10
 OceanSound==0.1.4
 DataSounds==1.2.5
-numpy==1.16.0
+numpy==1.16.1
 python-hdf4==0.9.1
 sebastian==0.0.3
 wsgiref==0.1.2
